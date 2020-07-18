@@ -1,4 +1,5 @@
 # chainlink-node
+Docker Compose sample for Chainlink Node
 
 ## Getting Started
 
@@ -25,3 +26,6 @@ Run the Docker images by running:
 $ docker-compose up -d
 $ docker exec -it -d chainlink chainlink local n -p /chainlink/.password -a /chainlink/.api
 ```
+
+## 3. Connect to Chainlink node's UI interface
+Open `http://localhost:6688`.
