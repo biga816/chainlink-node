@@ -1,0 +1,4 @@
+# chainlink
+chainlink/.env
+chainlink/data/*
+!.gitkeep
