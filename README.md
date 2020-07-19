@@ -17,7 +17,7 @@ $ echo "my_wallet_password" > chainlink/data/.password
 $ cp chainlink/.env.sample chainlink/.env
 ```
 
-Set the variable `ETH_URL` in the `.env` to your Ethereum client's URL.
+Set the variables `ETH_URL` & `ETH_CHAIN_ID` in the `.env` to your Ethereum client's URL & Chain ID.
 
 ## 2. Run a Chainlink Node
 
