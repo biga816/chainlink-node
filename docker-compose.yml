@@ -29,3 +29,13 @@ services:
     depends_on:
       - postgresql
     entrypoint: "/bin/bash"
+
+  adapter:
+    container_name: adapter
+    ports:
+      - "5000:5000"
+    build:
+      context: ../chainlink-scraping-adapter
+      dockerfile: ./Dockerfile
+    restart: on-failure
+    command: npm start

@@ -1,3 +1,10 @@
+# compiled output
+/node_modules
+/build
+
+# config
+.env
+
 # chainlink
 chainlink/.env
 chainlink/data/*
