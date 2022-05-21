@@ -31,7 +31,6 @@ Set the variables `ETH_URL` & `ETH_CHAIN_ID` in the `.env` to your Ethereum clie
 Run the Docker images by running:
 ```bash
 $ docker-compose up -d
-$ docker exec -it chainlink chainlink local n -p /chainlink/.password -a /chainlink/.api
 ```
 
 ### 4. Connect to Chainlink node's UI interface

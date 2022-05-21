@@ -1,0 +1,47 @@
+type                = "directrequest"
+schemaVersion       = 1
+name                = "Get Scraping Data"
+contractAddress     = "<YOUR_ORACLE_ADDRESS>"
+observationSource   = """
+  decode_log [
+    type="ethabidecodelog"
+    abi="OracleRequest(bytes32 indexed specId, address requester, bytes32 requestId, uint256 payment, address callbackAddr, bytes4 callbackFunctionId, uint256 cancelExpiration, uint256 dataVersion, bytes data)"
+    data="$(jobRun.logData)"
+    topics="$(jobRun.logTopics)"
+  ]
+  decode_cbor [type=cborparse data="$(decode_log.data)"]
+  fetch [
+    type="bridge"
+    name="scraping"
+    requestData="{\\"id\\": $(jobSpec.externalJobID), \\"url\\": $(decode_cbor.url), \\"path\\": $(decode_cbor.path), \\"filter\\": $(decode_cbor.filter)}"
+  ]
+
+decode_log -> decode_cbor -> fetch
+
+  data_date [type="jsonparse" path="data,0" data="$(fetch)"]
+  date_title [type="jsonparse" path="data,2,content,0" data="$(fetch)"]
+
+  fetch -> data_date
+  fetch -> date_title
+
+  encode_data [
+    type="ethabiencode"
+    abi="(bytes32 requestId, string date, string title)"
+    data="{\\"requestId\\": $(decode_log.requestId), \\"date\\": $(data_date), \\"title\\": $(date_title)}"
+  ]
+  
+  data_date -> encode_data
+  date_title -> encode_data
+  
+  encode_tx [
+    type="ethabiencode"
+    abi="fulfillOracleRequest2(bytes32 requestId, uint256 payment, address callbackAddress, bytes4 callbackFunctionId, uint256 expiration, bytes calldata data)"
+    data="{\\"requestId\\": $(decode_log.requestId), \\"payment\\": $(decode_log.payment), \\"callbackAddress\\": $(decode_log.callbackAddr), \\"callbackFunctionId\\": $(decode_log.callbackFunctionId), \\"expiration\\": $(decode_log.cancelExpiration), \\"data\\": $(encode_data)}"
+  ]
+  submit_tx [
+    type="ethtx" to="<YOUR_ORACLE_ADDRESS>"
+    data="$(encode_tx)"
+  ]
+
+  encode_data -> encode_tx -> submit_tx
+"""

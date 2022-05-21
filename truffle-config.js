@@ -1,25 +1,25 @@
-require('dotenv').config()
-const HDWalletProvider = require('@truffle/hdwallet-provider')
+require("dotenv").config();
+const HDWalletProvider = require("@truffle/hdwallet-provider");
 
 module.exports = {
   networks: {
     cldev: {
-      host: '127.0.0.1',
+      host: "127.0.0.1",
       port: 8545,
-      network_id: '*',
+      network_id: "*",
     },
-    ropsten: {
+    rinkeby: {
       provider: () => {
-        return new HDWalletProvider(process.env.MNEMONIC, process.env.RPC_URL)
+        return new HDWalletProvider(process.env.MNEMONIC, process.env.RPC_URL);
       },
-      network_id: 3,
-      skipDryRun: true,
+      network_id: 4,
+      // skipDryRun: true,
     },
     live: {
       provider: () => {
-        return new HDWalletProvider(process.env.MNEMONIC, process.env.RPC_URL)
+        return new HDWalletProvider(process.env.MNEMONIC, process.env.RPC_URL);
       },
-      network_id: '*',
+      network_id: "*",
       // Necessary due to https://github.com/trufflesuite/truffle/issues/1971
       // Should be fixed in Truffle 5.0.17
       skipDryRun: true,
@@ -27,7 +27,7 @@ module.exports = {
   },
   compilers: {
     solc: {
-      version: '0.6.9',
+      version: "0.7.0",
     },
   },
-}
+};
